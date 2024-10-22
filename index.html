@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.light-mode {
+            background-color: #e8f4f8;
+            color: #2c4a6a;
+        }
+        body.dark-mode {
+            background-color: #1a2a3a;
+            color: #e0e0e0;
+        }
+        .container {
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            transition: background-color 0.3s;
+            margin: 2rem 0;
+        }
+        .light-mode .container {
+            background-color: #ffffff;
+        }
+        .dark-mode .container {
+            background-color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .light-mode h1 {
+            color: #1a3a5a;
+        }
+        .dark-mode h1 {
+            color: #e0e0e0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        .light-mode label {
+            color: #2c4a6a;
+        }
+        .dark-mode label {
+            color: #b0c4de;
+        }
+        input[type="text"], textarea, select {
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, background-color 0.3s, color 0.3s;
+        }
+        .light-mode input[type="text"], .light-mode textarea, .light-mode select {
+            border: 2px solid #b0c4de;
+            background-color: #ffffff;
+            color: #2c4a6a;
+        }
+        .dark-mode input[type="text"], .dark-mode textarea, .dark-mode select {
+            border: 2px solid #4a5c6b;
+            background-color: #34495e;
+            color: #e0e0e0;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+        }
+        .light-mode input[type="text"]:focus, .light-mode textarea:focus, .light-mode select:focus {
+            border-color: #4a90e2;
+        }
+        .dark-mode input[type="text"]:focus, .dark-mode textarea:focus, .dark-mode select:focus {
+            border-color: #6ab0f3;
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        button {
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .light-mode button {
+            background-color: #4a90e2;
+            color: white;
+        }
+        .dark-mode button {
+            background-color: #6ab0f3;
+            color: #1a2a3a;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .light-mode button:hover {
+            background-color: #3a7bc8;
+        }
+        .dark-mode button:hover {
+            background-color: #4a90e2;
+        }
+        button:disabled {
+            cursor: not-allowed;
+            transform: none;
+        }
+        .light-mode button:disabled {
+            background-color: #b0c4de;
+        }
+        .dark-mode button:disabled {
+            background-color: #4a5c6b;
+            color: #8a9aa9;
+        }
+        #apiResponse {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            border-radius: 6px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .light-mode #apiResponse {
+            background-color: #f0f8ff;
+            border: 1px solid #b0c4de;
+        }
+        .dark-mode #apiResponse {
+            background-color: #34495e;
+            border: 1px solid #4a5c6b;
+        }
+        #apiResponse h2 {
+            margin-top: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .light-mode #apiResponse h2 {
+            color: #1a3a5a;
+        }
+        .dark-mode #apiResponse h2 {
+            color: #e0e0e0;
+        }
+        #responseContent {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .light-mode #responseContent {
+            color: #2c4a6a;
+        }
+        .dark-mode #responseContent {
+            color: #b0c4de;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+        .mode-toggle label {
+            margin-right: 10px;
+        }
+        #copyImage {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            vertical-align: middle;
+            filter: invert(0%);
+            transition: filter 0.3s;
+        }
+        .dark-mode #copyImage {
+            filter: invert(100%);
+        }
+        #copyImage:hover {
+            opacity: 0.8;
+        }
+        .copy-animation {
+            animation: copyPulse 0.5s;
+        }
+        @keyframes copyPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        #loaderImage {
+            width: 24px;
+            height: 24px;
+            display: none;
+            margin-left: 10px;
+            vertical-align: middle;
+            filter: invert(0%);
+            transition: filter 0.3s;
+        }
+        .dark-mode #loaderImage {
+            filter: invert(100%);
+        }
+        .highlight {
+            font-weight: bold;
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prompt Helper</h1>
+        <form id="apiForm">
+            <div class="mode-toggle">
+                <label for="modeSwitch">Dark Mode</label>
+                <label class="switch">
+                    <input type="checkbox" id="modeSwitch">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <label for="promptObjective">Prompt Objective:</label>
+            <select id="promptObjective" name="promptObjective" required>
+                <option value="">Select an objective</option>
+                <option value="Planning">Planning</option>
+                <option value="Image generation">Image generation</option>
+                <option value="Brainstorming">Brainstorming</option>
+                <option value="Code generation">Code generation</option>
+            </select>
+            
+            <label for="moreDetail">More detail about your prompt (max 200 characters):</label>
+            <textarea id="moreDetail" name="moreDetail" placeholder="Please provide more details about your request..." required maxlength="200" oninput="checkLength(this)"></textarea>
+            <script>
+                function checkLength(textarea) {
+                    if (textarea.value.length > 200) {
+                        alert("Your input exceeds 200 characters. Please shorten your text.");
+                        textarea.value = textarea.value.slice(0, 200);
+                    }
+                }
+            </script>
+            
+            <button type="submit" id="submitButton" disabled>Submit Request</button>
+        </form>
+
+        <div id="apiResponse" style="display: none;">
+            <h2>
+                Result:
+                <img id="copyImage" src="https://img.icons8.com/?size=100&id=QfmxGpnj0cA8&format=png&color=000000" alt="Copy" title="Copy to clipboard" class="animated-image">
+            </h2>
+            <p id="responseContent"></p>
+        </div>
+        <img id="loaderImage" src="https://img.icons8.com/?size=100&id=41P5EzUNOgVb&format=png&color=000000" alt="Loading" class="animated-image">
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

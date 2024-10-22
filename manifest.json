@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Helper",
+  "version": "1.0",
+  "description": "A helper tool for generating prompts",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://prompt-helper.com/*"
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
