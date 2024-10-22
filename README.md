@@ -11,11 +11,11 @@ Có hai cách để cài đặt extension này:
 1. Mở terminal hoặc command prompt
 2. Chạy lệnh sau để clone repository:
 
-* git clone https://github.com/your-username/prompt-helper.git
+* git clone https://github.com/CuongTran69/prompt-helper.git
 
 ### Cách 2: Tải ZIP
 
-1. Truy cập https://github.com/your-username/prompt-helper
+1. Truy cập https://github.com/CuongTran69/prompt-helper
 2. Nhấn nút "Code" màu xanh lá, sau đó chọn "Download ZIP"
 3. Giải nén file ZIP vừa tải về
 
